@@ -24,15 +24,22 @@ public class SeatService {
         return seatRepository.save(seat);
     }
 
-    public Seat updateSeat(Long id, Seat seat) {
-
+    public synchronized Seat updateSeat(Long id, Seat seat)
+    {
         Optional<Seat> s = seatRepository.findById(id);
-        if (s.isPresent()) {
-            Seat existingSet = s.get();
-            existingSet.setBooked(seat.isBooked());
-            return seatRepository.save(existingSet);
-        }
+        if(s.isPresent())
+        {
+            Seat existingSeat =s.get();
+            if(existingSeat.isBooked())
+            {
+                return null;
 
+            }
+            else {
+                existingSeat.setBooked(true);
+                return seatRepository.save(existingSeat);
+            }
+        }
         return null;
     }
 
@@ -44,7 +51,7 @@ public class SeatService {
             seatRepository.deleteById(id);
             return "Seat deleted successfully";
         }
-        return "seat not found";
+        return "Seat not found";
     }
 
 }
