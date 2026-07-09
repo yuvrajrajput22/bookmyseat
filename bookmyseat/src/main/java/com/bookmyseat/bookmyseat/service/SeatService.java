@@ -1,6 +1,8 @@
 package com.bookmyseat.bookmyseat.service;
 
 import com.bookmyseat.bookmyseat.entity.Seat;
+import com.bookmyseat.bookmyseat.exception.SeatAlreadyBookedException;
+import com.bookmyseat.bookmyseat.exception.SeatNotFoundException;
 import com.bookmyseat.bookmyseat.repository.SeatRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -26,24 +28,18 @@ public class SeatService {
     }
 
     @Transactional
-    public  Seat updateSeat(Long id, Seat seat)
+    public Seat updateSeat(Long id, Seat seat)
     {
-        Optional<Seat> s = seatRepository.findWithLockById(id);
-        if(s.isPresent())
-        {
-            Seat existingSeat =s.get();
-            if(existingSeat.isBooked())
-            {
-                return null;
-            }
-            else {
-                existingSeat.setBooked(true);
-                return seatRepository.save(existingSeat);
-            }
-        }
-        return null;
-    }
+        Seat existingSeat = seatRepository.findWithLockById(id)
+                .orElseThrow(() -> new SeatNotFoundException("Seat not found with id " + id));
 
+        if (existingSeat.isBooked()) {
+            throw new SeatAlreadyBookedException("Seat with id " + id + " is already booked");
+        }
+
+        existingSeat.setBooked(true);
+        return seatRepository.save(existingSeat);
+    }
     public String deleteSeat(Long id)
     {
         Optional<Seat> s= seatRepository.findById(id);
