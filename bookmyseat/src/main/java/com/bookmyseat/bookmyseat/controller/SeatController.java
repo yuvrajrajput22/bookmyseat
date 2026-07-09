@@ -28,4 +28,15 @@ public class SeatController {
     {
         return seatService.addSeat(seat);
     }
+
+    @PutMapping("/update/{id}")
+    public Seat updateSeat(@PathVariable Long id,@RequestBody Seat seat)
+    {
+        return seatService.updateSeat(id, seat);
+    }
+    @DeleteMapping("/delete/{id}")
+    public  String deleteSeat(@PathVariable Long id)
+    {
+         return seatService.deleteSeat(id);
+    }
 }
