@@ -1,13 +1,21 @@
 package com.bookmyseat.bookmyseat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Seat {
 
+    @ManyToOne
+    @JoinColumn(name = "show_id")
+    private Show show;
+
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
