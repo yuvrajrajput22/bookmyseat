@@ -2,6 +2,7 @@ package com.bookmyseat.bookmyseat.service;
 
 import com.bookmyseat.bookmyseat.entity.Seat;
 import com.bookmyseat.bookmyseat.repository.SeatRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +25,16 @@ public class SeatService {
         return seatRepository.save(seat);
     }
 
-    public synchronized Seat updateSeat(Long id, Seat seat)
+    @Transactional
+    public  Seat updateSeat(Long id, Seat seat)
     {
-        Optional<Seat> s = seatRepository.findById(id);
+        Optional<Seat> s = seatRepository.findWithLockById(id);
         if(s.isPresent())
         {
             Seat existingSeat =s.get();
             if(existingSeat.isBooked())
             {
                 return null;
-
             }
             else {
                 existingSeat.setBooked(true);
