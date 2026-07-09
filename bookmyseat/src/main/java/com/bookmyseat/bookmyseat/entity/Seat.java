@@ -1,5 +1,6 @@
 package com.bookmyseat.bookmyseat.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,6 +24,7 @@ public class Seat {
     private int seatNumber;
     private boolean isBooked;
 
+    @JsonCreator
     public Seat(){}
 
     public Seat(int seatNumber, boolean isBooked) {
