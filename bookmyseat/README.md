@@ -18,6 +18,8 @@ A movie/event ticket booking backend built with Spring Boot, focused on solving 
 - JWT-based Authentication & Authorization
 - Redis distributed locking
 - React frontend
+## Security Notes
+- Database credentials are managed via environment variables (not hardcoded) for security best practices
 
 ## Author
 Yuvraj Mandloi
