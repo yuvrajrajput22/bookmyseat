@@ -19,6 +19,10 @@ public class UserController {
     public List <User> getAllUser(){
         return userservice.getAllUser();
     }
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userservice.getUserById(id);
+    }
 
     @PostMapping("/add")
     public User registerUser( @RequestBody User user){
